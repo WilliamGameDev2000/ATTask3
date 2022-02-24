@@ -35,24 +35,24 @@ public class move : MonoBehaviour
 
     void FixedUpdate()
     {        
-        moveDirection += movement.ReadValue<Vector2>().x * CameraRight(playerCamera) * Time.deltaTime;
-        moveDirection += movement.ReadValue<Vector2>().y * CameraForward(playerCamera) * Time.deltaTime;
+        moveDirection += movement.ReadValue<Vector2>().x * CameraRight(playerCamera);
+        moveDirection += movement.ReadValue<Vector2>().y * CameraForward(playerCamera);
 
         RB.AddForce(moveDirection, ForceMode.Impulse);
         moveDirection = Vector3.zero;
 
-        /*float HorizontalSensitivity = 30.0f;
+        float HorizontalSensitivity = 30.0f;
         float VerticalSensitivity = 30.0f;
 
-        float RotationX = HorizontalSensitivity * LookX.ReadValue<float>() * Time.deltaTime;
-        float RotationY = VerticalSensitivity * LookY.ReadValue<float>() * Time.deltaTime;
+        float RotationX = HorizontalSensitivity * Look.ReadValue<Vector2>().x * Time.deltaTime;
+        float RotationY = VerticalSensitivity * Look.ReadValue<Vector2>().y * Time.deltaTime;
 
         Vector3 CamRotate = playerCamera.transform.rotation.eulerAngles;
 
         CamRotate.x -= RotationY;
-        CamRotate.z += RotationX;
+        CamRotate.y += RotationX;
 
-        RB.transform.rotation = Quaternion.Euler(CamRotate);*/
+        playerCamera.transform.rotation = Quaternion.Euler(CamRotate);
 
     }
 
