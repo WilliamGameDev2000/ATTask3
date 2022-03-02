@@ -5,6 +5,10 @@ using System.Linq;
 
 public class LoadChunk : MonoBehaviour
 {
+    ///change to load objs
+    ///in range bool event??
+    ///unload objs as well
+    ///
     private Vector3 playerPos;
 
     int terrainDivision = 16;
