@@ -133,9 +133,9 @@ public class TerrainExport : EditorWindow
         for (int i = 0; i < tPolys.Length; i += 3)
         {
             StringBuilder sb = new StringBuilder("f ", 43);
-            sb.Append(tPolys[i] + 1).Append("/").Append(tPolys[i] + 1).Append(" ").
-               Append(tPolys[i + 1] + 1).Append("/").Append(tPolys[i + 1] + 1).Append(" ").
-               Append(tPolys[i + 2] + 1).Append("/").Append(tPolys[i + 2] + 1);
+            sb.Append(tPolys[i] + 1).Append(" ").Append(tPolys[i] + 1).Append(" ").
+               Append(tPolys[i + 1] + 1).Append(" ").Append(tPolys[i + 1] + 1).Append(" ").
+               Append(tPolys[i + 2] + 1).Append(" ").Append(tPolys[i + 2] + 1);
             sw.WriteLine(sb);
         }
 
