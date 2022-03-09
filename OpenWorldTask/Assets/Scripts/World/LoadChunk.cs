@@ -13,15 +13,15 @@ public class LoadChunk : MonoBehaviour
     //ChunkData chunk_data = new ChunkData();
 
     [SerializeField]MeshFilter chunk_to_load;
-    /*private Vector3 playerPos;
+    MeshCollider chunk_collider;
 
-    Vector2 terrainDimensions;*/
+    /*Vector2 terrainDimensions;*/
 
     //List<GameObject> ActiveChunks;
 
     private void Start()
     {
-        Debug.Log(file.name);
+        chunk_collider = gameObject.GetComponent<MeshCollider>();
     }
 
     private void Update()
@@ -86,14 +86,16 @@ public class LoadChunk : MonoBehaviour
         mesh.triangles = indices.ToArray();
         mesh.RecalculateNormals();
         chunk_to_load.sharedMesh = mesh;
+        chunk_collider.sharedMesh = mesh;
 
         reader.Close();
     }
 
     [ContextMenu("UnloadOBJ")]
-    void unloadChunk()
+    public void unloadChunk()
     {
         chunk_to_load.sharedMesh = null;
+        chunk_collider.sharedMesh = null;
     }
 
     public List<int> Triangulate(List<int> _indices)
