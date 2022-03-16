@@ -6,6 +6,8 @@ public class LoadByDistance : MonoBehaviour
 {
     [SerializeField]
     private int distanceFromPlayer;
+    private float chunkBBSize = -140.625f;
+    private Vector3 chunkBB;
 
     private GameObject player;
 
@@ -15,6 +17,9 @@ public class LoadByDistance : MonoBehaviour
     {
         player = GameObject.Find("Player");
         chunks = new List<Chunks>();
+
+        chunkBB.x = chunkBBSize;
+        chunkBB.z = -chunkBBSize;
 
         StartCoroutine("CheckActivation");
     }
@@ -27,7 +32,7 @@ public class LoadByDistance : MonoBehaviour
         {
             foreach(Chunks chunk in chunks)
             {
-                if(Vector3.Distance(player.transform.position, chunk.chunkPos) > distanceFromPlayer)
+                if(Vector3.Distance(player.transform.position, chunk.chunkPos) < distanceFromPlayer || Vector3.Distance(player.transform.position, chunk.chunkPos + chunkBB) < distanceFromPlayer)
                 {
                     if(chunk.chunk == null)
                     {
@@ -35,7 +40,7 @@ public class LoadByDistance : MonoBehaviour
                     }
                     else
                     {
-                        chunk.chunk.unloadChunk();
+                        chunk.chunk.loadChunk();
                     }
                 }
                 else
@@ -46,7 +51,8 @@ public class LoadByDistance : MonoBehaviour
                     }
                     else
                     {
-                        chunk.chunk.loadChunk();
+                        chunk.chunk.unloadChunk();
+                        
                     }
                 }
             }

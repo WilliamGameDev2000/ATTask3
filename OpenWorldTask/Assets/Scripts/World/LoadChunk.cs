@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using System.IO;
 
 public class LoadChunk : MonoBehaviour
@@ -17,9 +18,7 @@ public class LoadChunk : MonoBehaviour
     private LoadByDistance loadByDistanceScript;
 
     private void Start()
-    {
-        loadChunk();
-
+    { 
         distanceLoadObject = GameObject.Find("ChunkLoader");
         loadByDistanceScript = distanceLoadObject.GetComponent<LoadByDistance>();
 
@@ -49,21 +48,6 @@ public class LoadChunk : MonoBehaviour
     [ContextMenu("Load OBJ")]
     public void loadChunk()
     {
-        /* if(File.Exists(file))
-         {
-             string fileContents = File.ReadAllText(file);
-
-             chunk_data = JsonUtility.FromJson<ChunkData>(fileContents);
-             Vector3[] vertex_vec = null;
-             for (int i = 0; i < chunk_data.vertecies.Length; i++)
-             {
-                 vertex_vec[i].x = chunk_data.vertecies[0];
-                 vertex_vec[i].y = chunk_data.vertecies[1];
-                 vertex_vec[i].z = chunk_data.vertecies[2];
-
-                 chunk_to_load.GetComponent<MeshFilter>().sharedMesh.vertices[i] = vertex_vec[i];
-             }
-         }*/
         if (!loaded)
         {
             string path = Application.streamingAssetsPath + "/" + file.name + ".obj";

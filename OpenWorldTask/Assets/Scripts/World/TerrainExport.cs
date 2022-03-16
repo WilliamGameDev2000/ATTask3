@@ -13,7 +13,6 @@ public class TerrainExport : EditorWindow
     saveResolution save_resolution = saveResolution.HALF;
 
     static TerrainData terrain_data;
-    static Vector3 terrain_pos;
 
     GameObject terrainGroup;
 
@@ -36,7 +35,6 @@ public class TerrainExport : EditorWindow
         if(terrain_obj)
         {
             terrain_data = terrain_obj.terrainData;
-            terrain_pos = terrain_obj.transform.position;
         }
         EditorWindow.GetWindow<TerrainExport>().Show();
     }
@@ -88,7 +86,7 @@ public class TerrainExport : EditorWindow
         {
             for (int x = 0; x < w; x++)
             {
-                t_verts[y * w + x] = Vector3.Scale(mesh_scale, new Vector3(-y, tData[x * t_res, y * t_res], x)) + terrain_pos;
+                t_verts[y * w + x] = Vector3.Scale(mesh_scale, new Vector3(-y, tData[x * t_res, y * t_res], x));
                 tUV[y * w + x] = Vector2.Scale(new Vector2(x * t_res, y * t_res), uv_scale);
             }
         }
@@ -151,7 +149,6 @@ public class TerrainExport : EditorWindow
         {
             selected_int = i;
             terrain_data = terrainGroup.transform.GetChild(i).GetComponent<Terrain>().terrainData;
-            terrain_pos = terrainGroup.transform.GetChild(i).position;
             Export();
         }
     }
