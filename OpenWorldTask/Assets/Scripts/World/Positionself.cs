@@ -5,6 +5,8 @@ using UnityEngine;
 public class Positionself : MonoBehaviour
 {
     GameObject Self;
+
+    [ContextMenu("Position OBJ")]
     void Start()
     {
         Self = GameObject.Find("TerrainOBJs");

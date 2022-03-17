@@ -32,19 +32,6 @@ public class LoadChunk : MonoBehaviour
         loadByDistanceScript.chunks.Add(new Chunks { chunk = this.gameObject.GetComponent<LoadChunk>(), chunkPos = this.transform.position });
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            loadChunk();
-        }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            unloadChunk();
-        }
-    }
-
     [ContextMenu("Load OBJ")]
     public void loadChunk()
     {
@@ -97,6 +84,7 @@ public class LoadChunk : MonoBehaviour
             loaded = false;
         }
         
+
     }
 
     public List<int> Triangulate(List<int> _indices)
