@@ -6,8 +6,10 @@ using TMPro;
 public class Dialogue : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textComponent;
-    [SerializeField] string[] lines;
     [SerializeField] float textSpeed;
+
+    ///choose a line in coming from the npc you're near
+    DialogueLines Lines;
 
     private bool inRange = false;
     private bool isTalking = false;
@@ -18,18 +20,22 @@ public class Dialogue : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(this);
     }
 
     void Start()
     {
+        textComponent = GameObject.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
         textComponent.text = string.Empty;
     }
 
     public void StartDialogue()
     {
         index = 0;
-
+        gameObject.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
         StartCoroutine("TypeLine");
     }
 
@@ -37,21 +43,26 @@ public class Dialogue : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0) && inRange)
         {
-            if(textComponent.text == lines[index])
+            if(textComponent.text == Lines.text[index])
             {
                 NextLine();
             }
             else
             {
                 StopAllCoroutines();
-                textComponent.text = lines[index];
+                textComponent.text = Lines.text[index];
             }
+        }
+
+        if(!inRange)
+        {
+            EndDialogue();
         }
     }
 
     IEnumerator TypeLine()
     {
-        foreach(char c in lines[index].ToCharArray())
+        foreach(char c in Lines.text[index].ToCharArray())
         {
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
@@ -60,7 +71,7 @@ public class Dialogue : MonoBehaviour
 
     void NextLine()
     {
-        if(index < lines.Length - 1)
+        if(index < Lines.text.Length - 1)
         {
             index++;
             textComponent.text = string.Empty;
@@ -68,10 +79,8 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            if(!inRange)
-                SetInDialogue(false);
-            
-            gameObject.SetActive(false);
+
+            EndDialogue();
         }
     }
 
@@ -92,7 +101,17 @@ public class Dialogue : MonoBehaviour
 
     public void SetInDialogue(bool talking)
     {
-        gameObject.SetActive(true);
         isTalking = talking;
+    }
+
+    public void SetLines(DialogueLines newLines)
+    {
+        Lines = newLines;
+    }
+
+    void EndDialogue()
+    {
+        gameObject.GetComponent<RectTransform>().localScale = new Vector3( 0,0,0);
+        textComponent.text = string.Empty;
     }
 }

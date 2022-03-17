@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(DialogueLines))]
 public class AI : MonoBehaviour
 {
     float lookRadius = 50f;
@@ -33,6 +34,7 @@ public class AI : MonoBehaviour
             if (Vector3.Distance(agent.transform.position, target.position) < agent.stoppingDistance + 2f)
             {
                 Dialogue.instance.SetInRange(true);
+                Dialogue.instance.SetLines(this.GetComponent<DialogueLines>());
             }
             else
             {
@@ -40,7 +42,9 @@ public class AI : MonoBehaviour
             }
         }
 
-        
+        if (!Dialogue.instance.GetInRange())
+            Dialogue.instance.SetInDialogue(false);
+
     }
 
     private void OnDrawGizmosSelected()
