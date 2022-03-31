@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(DialogueLines))]
 public class AI : MonoBehaviour
 {
     float lookRadius = 50f;
@@ -23,27 +20,44 @@ public class AI : MonoBehaviour
         if(Vector3.Distance(agent.transform.position, target.position) < lookRadius)
         {
             agent.SetDestination(target.position);
-            //Debug.Log(Vector3.Distance(agent.transform.position, target.position));
-            //Debug.Log(agent.stoppingDistance);
-            if (Dialogue.instance.GetInRange() && !Dialogue.instance.GetInDialogue())
-            {
-                Dialogue.instance.SetInDialogue(true);
-                Dialogue.instance.StartDialogue();
-            }
 
             if (Vector3.Distance(agent.transform.position, target.position) < agent.stoppingDistance + 2f)
             {
                 Dialogue.instance.SetInRange(true);
-                Dialogue.instance.SetLines(this.GetComponent<DialogueLines>());
+                if (Dialogue.instance.GetInDialogue())
+                {
+                    if (transform.parent.GetComponent<NPCSpawner>().hasQuest)
+                    {
+                        gameObject.GetComponent<GiveQuest>().giveQuest();
+                    }
+                    else
+                    {
+                        Dialogue.instance.SetLines(gameObject.transform.parent.GetComponent<NPCSpawner>().lines);
+                    }
+                }
+
             }
             else
             {
                 Dialogue.instance.SetInRange(false);
             }
+
+            if (Dialogue.instance.GetInRange() && !Dialogue.instance.GetInDialogue())
+            {
+                Dialogue.instance.SetInDialogue(true, this);
+                Dialogue.instance.StartDialogue();
+            }
         }
 
         if (!Dialogue.instance.GetInRange())
-            Dialogue.instance.SetInDialogue(false);
+        {
+            if (transform.parent.GetComponent<NPCSpawner>()._quest != null)
+            {
+                transform.parent.GetComponent<NPCSpawner>()._quest.SetHasItem(PlayerInstance.instance.player.GetComponent<PseudoInventory>().CheckInventory(transform.parent.GetComponent<NPCSpawner>()._quest.RequiredItem.gameObject));
+            }
+            
+            Dialogue.instance.SetInDialogue(false, null);
+        }
 
     }
 

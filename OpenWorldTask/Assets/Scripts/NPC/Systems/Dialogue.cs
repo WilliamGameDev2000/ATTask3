@@ -7,9 +7,7 @@ public class Dialogue : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textComponent;
     [SerializeField] float textSpeed;
-
-    ///choose a line in coming from the npc you're near
-    DialogueLines Lines;
+    AI dialogueSource;
 
     private bool inRange = false;
     private bool isTalking = false;
@@ -34,6 +32,7 @@ public class Dialogue : MonoBehaviour
 
     public void StartDialogue()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         index = 0;
         gameObject.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
         StartCoroutine("TypeLine");
@@ -43,14 +42,14 @@ public class Dialogue : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0) && inRange)
         {
-            if(textComponent.text == Lines.text[index])
+            if (textComponent.text == dialogueSource.transform.parent.GetComponent<NPCSpawner>().lines[index])
             {
                 NextLine();
             }
             else
             {
                 StopAllCoroutines();
-                textComponent.text = Lines.text[index];
+                textComponent.text = dialogueSource.transform.parent.GetComponent<NPCSpawner>().lines[index];
             }
         }
 
@@ -62,7 +61,7 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator TypeLine()
     {
-        foreach(char c in Lines.text[index].ToCharArray())
+        foreach (char c in dialogueSource.transform.parent.GetComponent<NPCSpawner>().lines[index].ToCharArray())
         {
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
@@ -71,7 +70,7 @@ public class Dialogue : MonoBehaviour
 
     void NextLine()
     {
-        if(index < Lines.text.Length - 1)
+        if (index < dialogueSource.transform.parent.GetComponent<NPCSpawner>().lines.Count - 1)
         {
             index++;
             textComponent.text = string.Empty;
@@ -99,18 +98,20 @@ public class Dialogue : MonoBehaviour
         return isTalking;
     }
 
-    public void SetInDialogue(bool talking)
+    public void SetInDialogue(bool talking, AI sourceDialogue)
     {
-        isTalking = talking;
+        dialogueSource = sourceDialogue;
+        isTalking = talking;   
     }
 
-    public void SetLines(DialogueLines newLines)
+    public void SetLines(List<string> newLines)
     {
-        Lines = newLines;
+        dialogueSource.transform.parent.GetComponent<NPCSpawner>().lines = newLines;
     }
 
     void EndDialogue()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         gameObject.GetComponent<RectTransform>().localScale = new Vector3( 0,0,0);
         textComponent.text = string.Empty;
     }

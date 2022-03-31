@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using System.IO;
 
+[RequireComponent(typeof(EntityList))]
 public class LoadChunk : MonoBehaviour
 {
 
@@ -29,7 +29,8 @@ public class LoadChunk : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        loadByDistanceScript.chunks.Add(new Chunks { chunk = this.gameObject.GetComponent<LoadChunk>(), chunkPos = this.transform.position });
+        loadByDistanceScript.chunks.Add(new Chunks { chunk = this.gameObject.GetComponent<LoadChunk>(), chunkPos = this.transform.position, entities = this.gameObject.GetComponent<EntityList>() });
+        //get entities in chunk and add to entity list
     }
 
     [ContextMenu("Load OBJ")]
@@ -83,8 +84,6 @@ public class LoadChunk : MonoBehaviour
             chunk_collider.sharedMesh = null;
             loaded = false;
         }
-        
-
     }
 
     public List<int> Triangulate(List<int> _indices)

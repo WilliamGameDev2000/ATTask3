@@ -21,10 +21,57 @@ public class LoadByDistance : MonoBehaviour
         chunkBB.x = chunkBBSize;
         chunkBB.z = -chunkBBSize;
 
-        StartCoroutine("CheckActivation");
+        //StartCoroutine("CheckChunkDistance");
     }
 
-    IEnumerator CheckActivation()
+    private void FixedUpdate()
+    {
+        List<Chunks> removeList = new List<Chunks>();
+
+        if (chunks.Count > 0)
+        {
+            foreach (Chunks chunk in chunks)
+            {
+                if (Vector3.Distance(player.transform.position, chunk.chunkPos) < distanceFromPlayer || Vector3.Distance(player.transform.position, chunk.chunkPos + chunkBB) < distanceFromPlayer)
+                {
+                    if (chunk.chunk == null)
+                    {
+                        removeList.Add(chunk);
+                    }
+                    else
+                    {
+                        chunk.chunk.loadChunk();
+                        if (chunk.entities != null)
+                            chunk.entities.LoadEntities();
+                    }
+                }
+                else
+                {
+                    if (chunk.chunk == null)
+                    {
+                        removeList.Add(chunk);
+                    }
+                    else
+                    {
+                        chunk.chunk.unloadChunk();
+                        if (chunk.entities != null)
+                            chunk.entities.UnloadEntities();
+                    }
+                }
+            }
+        }
+
+        if (removeList.Count > 0)
+        {
+            foreach (Chunks chunk in removeList)
+            {
+                chunks.Remove(chunk);
+            }
+        }
+
+    }
+
+    IEnumerator CheckChunkDistance()
     {
         List<Chunks> removeList = new List<Chunks>();
 
@@ -41,6 +88,8 @@ public class LoadByDistance : MonoBehaviour
                     else
                     {
                         chunk.chunk.loadChunk();
+                        if (chunk.entities != null)
+                            chunk.entities.LoadEntities();
                     }
                 }
                 else
@@ -52,13 +101,14 @@ public class LoadByDistance : MonoBehaviour
                     else
                     {
                         chunk.chunk.unloadChunk();
-                        
+                        if (chunk.entities != null)
+                            chunk.entities.UnloadEntities();
                     }
                 }
             }
         }
 
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.02f);
 
         if(removeList.Count > 0)
         {
@@ -68,13 +118,15 @@ public class LoadByDistance : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(0.01f);
-        StartCoroutine("CheckActivation");
+        yield return new WaitForSeconds(0.02f);
+        StartCoroutine("CheckChunkDistance");
     }
 }
 
-public class Chunks
+public struct Chunks
 {
     public LoadChunk chunk;
     public Vector3 chunkPos;
+    public EntityList entities;
+    //public Vector3 entityPos;
 }

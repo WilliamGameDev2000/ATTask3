@@ -17,6 +17,7 @@ public class move : MonoBehaviour
     private void Awake()
     {
         inputs = new Player();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnEnable()
@@ -34,12 +35,13 @@ public class move : MonoBehaviour
     }
 
     void FixedUpdate()
-    {        
+    { 
         moveDirection += movement.ReadValue<Vector2>().x * CameraRight(playerCamera);
         moveDirection += movement.ReadValue<Vector2>().y * CameraForward(playerCamera);
 
         RB.AddForce(moveDirection, ForceMode.Impulse);
         moveDirection = Vector3.zero;
+        RB.AddForce(-RB.velocity/75, ForceMode.Impulse);
 
         float HorizontalSensitivity = 30.0f;
         float VerticalSensitivity = 30.0f;
