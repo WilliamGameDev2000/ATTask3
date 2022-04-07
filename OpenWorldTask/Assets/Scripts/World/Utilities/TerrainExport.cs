@@ -5,6 +5,7 @@ using UnityEditor;
 using System.IO;
 using System.Text;
 
+#if(UNITY_EDITOR)
 enum saveResolution { FULL=0, HALF, QUATER, EIGHTH, SXTEENTH}
 
 [RequireComponent(typeof(Terrain))]
@@ -153,3 +154,4 @@ public class TerrainExport : EditorWindow
         }
     }
 }
+#endif

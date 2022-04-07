@@ -5,6 +5,7 @@ using UnityEditor;
 /// Credit to Chilli :)
 /// </summary>
 
+#if(UNITY_EDITOR)
 public class ObjectSpawner : EditorWindow
 {
     // Terrain Objects
@@ -50,3 +51,4 @@ public class ObjectSpawner : EditorWindow
         }
     }
 }
+#endif

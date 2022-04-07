@@ -53,7 +53,8 @@ public class AI : MonoBehaviour
         {
             if (transform.parent.GetComponent<NPCSpawner>()._quest != null)
             {
-                transform.parent.GetComponent<NPCSpawner>()._quest.SetHasItem(PlayerInstance.instance.player.GetComponent<PseudoInventory>().CheckInventory(transform.parent.GetComponent<NPCSpawner>()._quest.RequiredItem.gameObject));
+                transform.parent.GetComponent<NPCSpawner>()._quest.SetHasItem(PlayerInstance.instance.Inventory.CheckInventory(
+                    transform.parent.GetComponent<NPCSpawner>()._quest.RequiredItem.gameObject));
             }
             
             Dialogue.instance.SetInDialogue(false, null);

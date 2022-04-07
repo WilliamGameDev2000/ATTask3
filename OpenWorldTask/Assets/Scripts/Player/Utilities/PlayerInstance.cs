@@ -15,4 +15,5 @@ public class PlayerInstance : MonoBehaviour
     #endregion
 
     public GameObject player;
+    public PseudoInventory Inventory;
 }

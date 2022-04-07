@@ -8,7 +8,7 @@ public class Pick_Up : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            PlayerInstance.instance.player.GetComponent<PseudoInventory>().AddToInventory(gameObject);
+            PlayerInstance.instance.Inventory.AddToInventory(transform.gameObject);
             gameObject.GetComponent<MeshFilter>().sharedMesh = null;
         }
     }

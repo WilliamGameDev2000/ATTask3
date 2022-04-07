@@ -28,11 +28,7 @@ public class Quest
 
     public bool CanComplete()
     {
-        if(!Base.HasItem)
-        {
-            return false;
-        }
-        return true;
+        return Base.HasItem;
     }
 }
 

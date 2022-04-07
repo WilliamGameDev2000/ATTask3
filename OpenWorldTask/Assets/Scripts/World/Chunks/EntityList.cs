@@ -50,4 +50,13 @@ public class EntityList : MonoBehaviour
             }
         }
     }
+
+    public void Remove(GameObject to_remove)
+    {
+        if(chunk_object_entities.Contains(to_remove))
+        {
+            chunk_object_entities.Remove(to_remove);
+        }
+        
+    }
 }
