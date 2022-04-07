@@ -7,7 +7,8 @@ using System.IO;
 public class LoadChunk : MonoBehaviour
 {
 
-    [SerializeField]Object file;
+    [SerializeField]
+    string fileName;
 
     [SerializeField]MeshFilter chunk_to_load;
     [SerializeField]MeshCollider chunk_collider;
@@ -18,7 +19,7 @@ public class LoadChunk : MonoBehaviour
     private LoadByDistance loadByDistanceScript;
 
     private void Start()
-    { 
+    {
         distanceLoadObject = GameObject.Find("ChunkLoader");
         loadByDistanceScript = distanceLoadObject.GetComponent<LoadByDistance>();
 
@@ -38,7 +39,7 @@ public class LoadChunk : MonoBehaviour
     {
         if (!loaded)
         {
-            string path = Application.streamingAssetsPath + "/" + file.name + ".obj";
+            string path = Application.streamingAssetsPath + "/" + fileName + ".obj";
 
             StreamReader reader = new StreamReader(path);
             string line;
